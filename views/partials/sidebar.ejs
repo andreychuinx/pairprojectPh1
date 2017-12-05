@@ -1,0 +1,10 @@
+<div class="navbar-default sidebar" role="navigation">
+  <div class="sidebar-nav navbar-collapse">
+    <ul class="nav" id="side-menu">
+      <li <% if (sidebar == 'dashboard') { %> class="active" <% } %>><a href="/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
+      <li <% if (sidebar == 'teachers') { %> class="active" <% } %>><a href="/teachers"><i class="fa fa-table fa-fw"></i> Teachers</a></li>
+      <li <% if (sidebar == 'subjects') { %> class="active" <% } %>><a href="/subjects"><i class="fa fa-table fa-fw"></i> Subjects</a></li>
+      <li <% if (sidebar == 'students') { %> class="active" <% } %>><a href="/students"><i class="fa fa-table fa-fw"></i> Students</a></li>
+    </ul>
+  </div>
+</div>
