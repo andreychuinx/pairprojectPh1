@@ -4,11 +4,11 @@ const Sequelize = require('sequelize')
 const Router    = express.Router()
 
 Router.get('/', (req, res) => {
-  Model.Tempat.findAll()
+  Model.Tempat.findAll({order: ['nama_tempat']})
   .then(tempat => {
     res.render('./tempat', {
       title   : 'Data Tempat',
-      sidebar : 'tempats',
+      sidebar : 'tempat',
       tempat  : tempat,
     })
   })
@@ -17,7 +17,7 @@ Router.get('/', (req, res) => {
 Router.get('/add', (req, res) => {
   res.render('./tempat_add', {
     title       : 'Data Tempat',
-    sidebar     : 'tempats',
+    sidebar     : 'tempat',
     tempat      : false,
     errMessage  : null,
   })
@@ -37,7 +37,7 @@ Router.post('/add', (req, res) => {
   .catch(err => {
     res.render('./tempat_add', {
       title       : 'Data Tempat',
-      sidebar     : 'tempats',
+      sidebar     : 'tempat',
       tempat      : false,
       errMessage  : err.message,
     })
@@ -49,7 +49,7 @@ Router.get('/edit/:id', (req, res) => {
   .then(tempat => {
     res.render('./tempat_add', {
       title       : 'Data Tempat',
-      sidebar     : 'tempats',
+      sidebar     : 'tempat',
       tempat      : tempat,
       errMessage  : null,
     })
@@ -76,7 +76,7 @@ Router.post('/edit/:id', (req, res) => {
     .then(tempat => {
       res.render('./tempat_add', {
         title       : 'Data Tempat',
-        sidebar     : 'tempats',
+        sidebar     : 'tempat',
         tempat      : tempat,
         errMessage  : err.message,
       })

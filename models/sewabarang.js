@@ -5,12 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     tgl_kembali: DataTypes.DATE,
     status_pinjam: DataTypes.INTEGER,
     status_barang: DataTypes.STRING
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
   });
   return SewaBarang;
 };

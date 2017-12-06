@@ -1,5 +1,6 @@
 'use strict';
-const Op = require('sequelize').Op
+const Op      = require('sequelize').Op
+const bcrypt  = require('bcrypt')
 
 module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define('User', {
@@ -8,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isEmail: true,
+        notEmpty: {
+          args: true,
+          msg: 'Email harus di isi !!'
+        },
         isUnique: function(value, next) {
           User.findAll({
             where:{
@@ -54,6 +59,46 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     last_login: DataTypes.DATE
+  }, {
+    hooks: {
+      beforeCreate: (user, options) => {
+        return bcrypt.hash(user.password, 10)
+        .then((hash) => {
+          user.password = hash
+        })
+      },
+      beforeUpdate: (user, options) => {
+        return bcrypt.hash(user.password, 10)
+        .then((hash) => {
+          user.password = hash
+        })
+      }
+    },
+    instanceMethods: {
+      comparePassword: function (userPassword, callback) {
+        bcrypt.compare(userPassword, this.password)
+        .then((isMatch) => {
+          callback(isMatch)
+        })
+      }
+    }
   });
+
+  User.prototype.check_password = function (userPassword, callback) {
+    bcrypt.compare(userPassword, this.password)
+    .then((isMatch) => {
+      callback(isMatch)
+    })
+    .catch((err) => {
+      callback(err)
+    })
+  }
+
+  User.associate = function(models) {
+    User.belongsToMany(models.Barang, {
+      through: 'RequestBarang'
+    })
+  }
+
   return User;
 };

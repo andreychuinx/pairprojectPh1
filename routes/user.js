@@ -1,14 +1,14 @@
 const express   = require('express')
-const Model     = require('../models')
 const Sequelize = require('sequelize')
+const Model     = require('../models')
 const Router    = express.Router()
 
 Router.get('/', (req, res) => {
-  Model.User.findAll()
+  Model.User.findAll({order: ['email']})
   .then(users => {
     res.render('./user', {
       title   : 'Data User',
-      sidebar : 'users',
+      sidebar : 'user',
       user    : users,
     })
   })
@@ -17,7 +17,7 @@ Router.get('/', (req, res) => {
 Router.get('/add', (req, res) => {
   res.render('./user_add', {
     title       : 'Data User',
-    sidebar     : 'users',
+    sidebar     : 'user',
     user        : false,
     errMessage  : null,
   })
@@ -38,7 +38,7 @@ Router.post('/add', (req, res) => {
   .catch(err => {
     res.render('./user_add', {
       title       : 'Data User',
-      sidebar     : 'users',
+      sidebar     : 'user',
       user        : false,
       errMessage  : err.message,
     })
@@ -50,7 +50,7 @@ Router.get('/edit/:id', (req, res) => {
   .then(user => {
     res.render('./user_add', {
       title       : 'Data User',
-      sidebar     : 'users',
+      sidebar     : 'user',
       user        : user,
       errMessage  : null,
     })
@@ -68,7 +68,8 @@ Router.post('/edit/:id', (req, res) => {
   Model.User.update(objUser, {
     where: {
       id: req.params.id,
-    }
+    },
+    individualHooks: true,
   })
   .then(() => {
     res.redirect('/user')
@@ -78,7 +79,7 @@ Router.post('/edit/:id', (req, res) => {
     .then(user => {
       res.render('./user_add', {
         title       : 'Data User',
-        sidebar     : 'users',
+        sidebar     : 'user',
         user        : user,
         errMessage  : err.message,
       })
