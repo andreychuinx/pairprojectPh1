@@ -2,13 +2,18 @@
 module.exports = (sequelize, DataTypes) => {
   var Barang = sequelize.define('Barang', {
     nama_barang: DataTypes.STRING,
-    stock: DataTypes.INTEGER
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
+    stock: {
+      type: DataTypes.INTEGER,
+      validate:{
+        isNumeric : { msg : 'data yang di input bukan nomor'},
       }
     }
   });
+  Barang.associate = function (models) {
+    Barang.belongsToMany(models.Tempat, {
+      through: 'TempatBarang'
+    })
+
+  }
   return Barang;
 };
