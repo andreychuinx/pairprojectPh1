@@ -42,7 +42,7 @@
                     </div>
                     <div class="form-group">
                       <label>Nama Barang</label>
-                      <select name="barang" class="form-control">
+                      <select name="barang" class="form-control" required>
                         <option value="0">-- Select One --</option>
                         <% barang.forEach((itemBarang) => { %>
                           <option <% if (itemBarang.id == pemesanan.BarangId) { %> selected <% } %> value="<%= itemBarang.id%>"><%= itemBarang.nama_barang%></option>
@@ -51,10 +51,14 @@
                     </div>
                     <div class="form-group">
                       <label>Quantity</label>
-                      <input name="quantity" value="<%= pemesanan.quantity %>" type="text" placeholder="Quantity.." class="form-control">
+                      <input name="quantity" value="<%= pemesanan.quantity %>" type="number" placeholder="Quantity.." class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Tanggal Pinjam</label>
+                      <input name="tgl_pinjam" value="<%= pemesanan.tgl_pinjam %>" type="date" placeholder="Tanggal Pinjam.." class="form-control" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Save</button>
-                    <a href="/tempat" class="btn btn-default">Cancel</a>
+                    <a href="/pemesanan" class="btn btn-default">Cancel</a>
                   </form>
                 </div>
               </div>

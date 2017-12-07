@@ -5,11 +5,14 @@ const Router    = express.Router()
 const title     = 'Data Pemesanan Barang'
 
 Router.get('/', (req, res) => {
-  Model.RequestBarang.findAll({where: {
-    UserId: res.locals.userSession.id
-  }})
+  Model.RequestBarang.findAll({
+    where: {
+      UserId: res.locals.userSession.id
+    },
+    order: ['tgl_pinjam'],
+    include: [Model.Barang]
+  })
   .then(pemesanan => {
-    // console.log(pemesanan[0].Barangs);
     res.render('./pemesanan', {
       title     : title,
       sidebar   : 'pemesanan',
@@ -32,30 +35,63 @@ Router.get('/add', (req, res) => {
 })
 
 Router.post('/add', (req, res) => {
-  let objPemesanan = {
-    UserId      : userSession.id,
-    BarangId    : req.body.barang,
-    quantity    : req.body,quantity,
-    tgl_pinjam  : req.body.tgl_pinjam,
-    createdAt   : new Date(),
-    updatedAt   : new Date(),
-  }
-  Model.Pemesanan.create(objPemesanan)
-  .then(() => {
-    res.redirect('/pemesanan')
+  Model.Barang.findById(req.body.barang)
+  .then((barang) => {
+    if (barang != null) {
+      let objPemesanan = {
+        UserId      : res.locals.userSession.id,
+        BarangId    : req.body.barang,
+        quantity    : req.body.quantity,
+        tgl_pinjam  : req.body.tgl_pinjam,
+        approval    : 0,
+        createdAt   : new Date(),
+        updatedAt   : new Date(),
+      }
+      Model.RequestBarang.create(objPemesanan)
+      .then(() => {
+        res.redirect('/pemesanan')
+      })
+      .catch((err) => {
+        Model.Barang.findAll()
+        .then((barang) => {
+          res.render('./pemesanan_add', {
+            title       : title,
+            sidebar     : 'pemesanan',
+            pemesanan   : false,
+            barang      : barang,
+            errMessage  : err.message,
+          })
+        })
+      })
+    } else {
+      Model.Barang.findAll()
+      .then((barang) => {
+        res.render('./pemesanan_add', {
+          title       : title,
+          sidebar     : 'pemesanan',
+          pemesanan   : false,
+          barang      : barang,
+          errMessage  : 'Silahkan pilih barang !!',
+        })
+      })
+    }
   })
   .catch(err => {
-    res.render('./pemesanan_add', {
-      title       : title,
-      sidebar     : 'pemesanan',
-      pemesanan   : false,
-      errMessage  : err.message,
+    Model.Barang.findAll()
+    .then((barang) => {
+      res.render('./pemesanan_add', {
+        title       : title,
+        sidebar     : 'pemesanan',
+        pemesanan   : false,
+        barang      : barang,
+        errMessage  : err.message,
+      })
     })
   })
 })
 
 Router.get('/edit/:id', (req, res) => {
-  Model.Pemesanan.findById(req.params.id)
+  Model.RequestBarang.findById(req.params.id)
   .then(pemesanan => {
     Model.Barang.findAll()
     .then((barang) => {
@@ -79,7 +115,7 @@ Router.post('/edit/:id', (req, res) => {
     tgl_pinjam  : req.body.tgl_pinjam,
     updatedAt   : new Date(),
   }
-  Model.Pemesanan.update(objPemesanan, {
+  Model.RequestBarang.update(objPemesanan, {
     where: {
       id: req.params.id,
     }
@@ -88,7 +124,7 @@ Router.post('/edit/:id', (req, res) => {
     res.redirect('/pemesanan')
   })
   .catch(err => {
-    Model.Pemesanan.findById(req.params.id)
+    Model.RequestBarang.findById(req.params.id)
     .then(pemesanan => {
       res.render('./tempat_add', {
         title       : title,
@@ -101,7 +137,7 @@ Router.post('/edit/:id', (req, res) => {
 })
 
 Router.get('/delete/:id', (req, res) => {
-  Model.Pemesanan.destroy({
+  Model.RequestBarang.destroy({
     where: {
       id: req.params.id
     }

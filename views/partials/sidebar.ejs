@@ -8,6 +8,9 @@
         <li <% if (sidebar == 'tempat') { %> class="active" <% } %>><a href="/tempat"><i class="fa fa-table fa-fw"></i> Tempat</a></li>
       <% } %>
       <li <% if (sidebar == 'pemesanan') { %> class="active" <% } %>><a href="/pemesanan"><i class="fa fa-table fa-fw"></i> Pemesanan Barang</a></li>
+      <% if (userSession.role === 'admin') { %>
+      <li <% if (sidebar == 'approval') { %> class="active" <% } %>><a href="/approval"><i class="fa fa-table fa-fw"></i> Approval Pemesanan</a></li>
+      <% } %>
       <li>
         <a href="#"><i class="fa fa-list-ul fa-fw"></i> Data Laporan<span class="fa arrow"></span></a>
         <ul class="nav nav-second-level">

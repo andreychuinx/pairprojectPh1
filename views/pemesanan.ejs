@@ -36,15 +36,27 @@
                   <tbody>
                     <% for (let i = 0; i < pemesanan.length; i++) { %>
                       <tr class="odd gradeX">
+                        <%
+                          var status_approval = ''
+                          if (pemesanan[i].approval == 0) {
+                            status_approval = 'Waiting'
+                          } else if (pemesanan[i].approval == 1) {
+                            status_approval = 'Approved'
+                          } else if (pemesanan[i].approval == 3) {
+                            status_approval = 'Rejected'
+                          }
+                        %>
                         <td><%= i + 1 %></td>
-                        <td><%= pemesanan[i].Users.email %></td>
-                        <td><%= pemesanan[i].Barangs.nama_barang %></td>
+                        <td><%= userSession.email %></td>
+                        <td><%= pemesanan[i].Barang.nama_barang %></td>
                         <td><%= pemesanan[i].quantity %></td>
-                        <td><%= pemesanan[i].tgl_pinjam %></td>
-                        <td><%= pemesanan[i].approval %></td>
+                        <td><%= pemesanan[i].tgl_pinjam.toLocaleDateString() %></td>
+                        <td><%= status_approval %></td>
                         <td class="text-center">
-                          <a href="/pemesanan/edit/<%= pemesanan[i].id %>" class="btn btn-primary btn-circle"><i class="fa fa-edit"></i></a>
-                          <a href="/pemesanan/delete/<%= pemesanan[i].id %>" class="btn btn-danger btn-circle" onclick="return confirm('Are you sure want to delete ?')"><i class="fa fa-remove"></i></a>
+                          <% if (pemesanan[i].approval == 0) { %>
+                            <a href="/pemesanan/edit/<%= pemesanan[i].Barang.id %>" class="btn btn-primary btn-circle"><i class="fa fa-edit"></i></a>
+                            <a href="/pemesanan/delete/<%= pemesanan[i].Barang.id %>" class="btn btn-danger btn-circle" onclick="return confirm('Are you sure want to delete ?')"><i class="fa fa-remove"></i></a>
+                          <% } %>
                         </td>
                       </tr>
                     <% } %>
