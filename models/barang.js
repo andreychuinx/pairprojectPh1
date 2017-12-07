@@ -13,7 +13,17 @@ module.exports = (sequelize, DataTypes) => {
     Barang.belongsToMany(models.Tempat, {
       through: 'TempatBarang'
     })
-
+    Barang.hasMany(models.TempatBarang)
   }
+  Barang.afterCreate(function(data, options){
+    return sequelize.models.TempatBarang.create({
+      BarangId : data.id,
+      TempatId : 1,
+      quantity : data.stock,
+      createdAt : new Date(),
+      updatedAt : new Date(),
+      isUpdated : 0
+    })
+  })
   return Barang;
 };
