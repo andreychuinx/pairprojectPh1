@@ -6,6 +6,7 @@ var Sequelize = require('sequelize');
 var basename  = path.basename(__filename);
 
 var env       = 'development';
+
 var config    = require(__dirname + '/../config/config.json')[env];
 var db        = {};
 
