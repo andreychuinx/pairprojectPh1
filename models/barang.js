@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       through: 'TempatBarang'
     })
     Barang.hasMany(models.TempatBarang)
+    
   }
   Barang.afterCreate(function(data, options){
     return sequelize.models.TempatBarang.create({

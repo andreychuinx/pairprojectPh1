@@ -3,14 +3,20 @@ const express = require('express')
 , Model = require('../models')
 
 Router.get('/', (req, res) => {
-let totalTeacher = 0
-, totalSubject = 0
-, totalStudent = 0
-  res.render('index', {
-    title         : 'Inventory App',
-    sidebar       : 'dashboard',
-    // template      : '../../views/pages/dashboard',
+  let totalUser = 0
+  let totalTempat = 0
 
+  Model.User.count()
+  .then(countUser => {
+    Model.Tempat.count()
+    .then(countTempat => {
+      res.render('index', {
+        title         : 'Inventory App',
+        sidebar       : 'dashboard',
+        totalUser     : countUser,
+        totalTempat   : countTempat,
+      })
+    })
   })
 })
 

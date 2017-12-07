@@ -72,12 +72,18 @@ Router.post('/edit/:id', function (req, res){
     }).then(function (quantityBarang){
         if(quantityBarang.length == 1){
             if(stock <= quantityBarang[0].quantity){
-                Model.TempatBarang.update({quantity:stock},{
+                Model.TempatBarang.update({
+                    nama_barang:req.body.nama_barang,
+                    quantity:stock
+                },{
                     where :{
                         id : quantityBarang[0].id
                     }
                 }).then(function(){
-                    Model.Barang.update({stock : stock},{
+                    Model.Barang.update({
+                        nama_barang : req.body.nama_barang,
+                        stock : stock
+                    },{
                         where : {
                             id : req.params.id
                         }
