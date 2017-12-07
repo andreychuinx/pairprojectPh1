@@ -80,7 +80,10 @@ Router.post('/edit/:id', function (req, res){
                         id : quantityBarang[0].id
                     }
                 }).then(function(){
-                    Model.Barang.update({stock : stock},{
+                    Model.Barang.update({
+                        nama_barang : req.body.nama_barang,
+                        stock : stock
+                    },{
                         where : {
                             id : req.params.id
                         }
