@@ -8,11 +8,12 @@ const index             = require('./routes/index')
 const loginRoutes       = require('./routes/login')
 const logoutRoutes      = require('./routes/logout')
 const userRoutes        = require('./routes/user')
-// const barangRoutes = require('./routes/barang')
+const barangRoutes = require('./routes/barang')
 const tempatRoutes      = require('./routes/tempat')
-// const tempatBarangRoutes = require('./routes/tempatbarang')
+const tempatBarangRoutes = require('./routes/tempatbarang')
 const reqBarangRoutes   = require('./routes/pemesanan')
 const app               = express()
+
 
 app.set('view engine', 'ejs')
 app.set('view cache', false)
@@ -32,9 +33,9 @@ app.use((req, res, next) => {
 
 app.use('/', authSession.checkSession, index)
 app.use('/user', authSession.checkSession, userRoutes)
-// app.use('/barang', barangRoutes)
+app.use('/barang', barangRoutes)
 app.use('/tempat', authSession.checkSession, tempatRoutes)
-// app.use('/tempatbarang', tempatBarangRoutes)
+app.use('/tempatbarang', tempatBarangRoutes)
 app.use('/pemesanan', authSession.checkSession, reqBarangRoutes)
 
 

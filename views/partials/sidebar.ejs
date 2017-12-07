@@ -11,6 +11,7 @@
       <% if (userSession.role === 'admin') { %>
       <li <% if (sidebar == 'approval') { %> class="active" <% } %>><a href="/approval"><i class="fa fa-table fa-fw"></i> Approval Pemesanan</a></li>
       <% } %>
+      <li <% if (sidebar == 'asset') { %> class="active" <% } %>><a href="/tempatbarang"><i class="fa fa-table fa-fw"></i> Asset</a></li>
       <li>
         <a href="#"><i class="fa fa-list-ul fa-fw"></i> Data Laporan<span class="fa arrow"></span></a>
         <ul class="nav nav-second-level">

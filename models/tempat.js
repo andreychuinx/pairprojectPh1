@@ -11,7 +11,14 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+
     deskripsi: DataTypes.STRING
   });
+  Tempat.associate = function (models) {
+    Tempat.belongsToMany(models.Barang, {
+      through : 'TempatBarang'
+    })
+    Tempat.hasMany(models.TempatBarang)
+  }
   return Tempat;
 };
